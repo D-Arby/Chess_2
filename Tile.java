@@ -50,11 +50,7 @@ public class Tile
         {
             if (isToggled && movablePiece != null)
             {
-                GridPane.setRowIndex(movablePiece.getImageView(), x);
-                GridPane.setColumnIndex(movablePiece.getImageView(), y);
-                movablePiece.setX(x);
-                movablePiece.setY(y);
-                board.getTile(movablePiece.getX(), movablePiece.getY()).setPiece(null);
+                movablePiece.move(x, y);
                 this.toggle();
             }
         });

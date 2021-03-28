@@ -1,6 +1,5 @@
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -11,8 +10,9 @@ public abstract class Piece
     private int y;
     private final String color;
     private ImageView imageView;
-    private Board board;
-    public Scene scene;
+    private final Board board;
+    private String type;
+    private boolean isFirstMove;
 
     public Piece(int x, int y, String color, Board board)
     {
@@ -20,6 +20,7 @@ public abstract class Piece
         this.y = y;
         this.color = color;
         this.board = board;
+        isFirstMove = true;
     }
 
     public abstract void setMovablePoints(Board board);
@@ -27,6 +28,18 @@ public abstract class Piece
     public void setImageView(String src)
     {
         imageView = new ImageView(new Image(src));
+        if (type.equals("Pawn"))
+        {
+            imageView.setFitHeight(40);
+            imageView.setFitWidth(32);
+            GridPane.setMargin(imageView, new Insets(0, 0, 0, 15));
+        }
+        else
+        {
+            imageView.setFitWidth(40);
+            imageView.setFitHeight(45);
+            GridPane.setMargin(imageView, new Insets(2, 0, 0, 12));
+        }
 
         imageView.setOnMouseEntered(e ->
         {
@@ -77,5 +90,41 @@ public abstract class Piece
     public ImageView getImageView()
     {
         return imageView;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public Board getBoard()
+    {
+        return board;
+    }
+
+    public String getColor()
+    {
+        return color;
+    }
+
+    public void move(int x, int y)
+    {
+        board.getTile(x, y).setPiece(null);
+        GridPane.setRowIndex(imageView, x);
+        GridPane.setColumnIndex(imageView, y);
+        setX(x);
+        setY(y);
+        board.getTile(getX(), getY()).setPiece(null);
+        isFirstMove = false;
+    }
+
+    public boolean getFirstMove()
+    {
+        return isFirstMove;
     }
 }
