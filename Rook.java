@@ -16,9 +16,22 @@ public class Rook extends Piece
     }
 
     @Override
-    public void setMovablePoints(Board board)
+    public void toggleMovableTiles()
     {
+        for (int i = getX() - 1; i > 0; i--)
+        {
+            if (getBoard().getTile(i, getY()).getPiece() == null)
+            {
+                getBoard().getTile(i, getY()).toggle();
+                getBoard().getTile(i, getY()).setMovablePiece(this);
+            }
 
+            else if (getBoard().getTile(i, getY()).getPiece() != null && !(getBoard().getTile(i, getY()).getPiece().getColor().equals(getColor())))
+            {
+                getBoard().getTile(i, getY()).toggle();
+                getBoard().getTile(i, getY()).setMovablePiece(this);
+                break;
+            }
+        }
     }
-
 }

@@ -16,8 +16,7 @@ public class Knight extends Piece
     }
 
     @Override
-    public void setMovablePoints(Board board)
-    {
+    public void toggleMovableTiles() {
 
     }
 }

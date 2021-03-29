@@ -30,20 +30,21 @@ public class Board
 
                 grid[i][j] = new Tile(i, j, color,this);
                 layout.add(grid[i][j].getImageView(), j, i);
-
-                if (i == 1)
-                {
-                    piece = new Pawn(i, j, "Black", this);
-                    grid[i][j].setPiece(piece);
-                    layout.add(piece.getImageView(), j, i);
-                }
-                else if (i == 6)
-                {
-                    piece = new Pawn(i, j, "White", this);
-                    grid[i][j].setPiece(piece);
-                    layout.add(piece.getImageView(), j, i);
-                }
             }
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            piece = new Pawn(1, i, "Black", this);
+            grid[1][i].setPiece(piece);
+            layout.add(piece.getImageView(), i, 1);
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            piece = new Pawn(6, i, "White", this);
+            grid[6][i].setPiece(piece);
+            layout.add(piece.getImageView(), i, 6);
         }
 
         for (int i = 0; i < 8; i++)
@@ -96,7 +97,7 @@ public class Board
                 piece = new King(7, i, "White", this);
             }
 
-            grid[0][i].setPiece(piece);
+            grid[7][i].setPiece(piece);
             layout.add(piece.getImageView(), i, 7);
         }
     }

@@ -13,6 +13,7 @@ public abstract class Piece
     private final Board board;
     private String type;
     private boolean isFirstMove;
+    private static int turn;
 
     public Piece(int x, int y, String color, Board board)
     {
@@ -21,9 +22,8 @@ public abstract class Piece
         this.color = color;
         this.board = board;
         isFirstMove = true;
+        turn = 0;
     }
-
-    public abstract void setMovablePoints(Board board);
 
     public void setImageView(String src)
     {
@@ -43,7 +43,10 @@ public abstract class Piece
 
         imageView.setOnMouseEntered(e ->
         {
-            imageView.getScene().setCursor(Cursor.HAND);
+            if (turn % 2 == 0 && this.color.equals("White") || turn % 2 != 0 && this.color.equals("Black"))
+            {
+                imageView.getScene().setCursor(Cursor.HAND);
+            }
         });
 
         imageView.setOnMouseExited(e ->
@@ -53,18 +56,45 @@ public abstract class Piece
 
         imageView.setOnMouseClicked(e ->
         {
-            for (int i = 0; i < 8; i++)
+            if (turn % 2 == 0 && this.color.equals("White") || turn % 2 != 0 && this.color.equals("Black"))
             {
-                for (int j = 0; j < 8; j++)
+                for (int i = 0; i < 8; i++)
                 {
-                    if (board.getTile(i, j).getIsToggled())
+                    for (int j = 0; j < 8; j++)
                     {
-                        board.getTile(i, j).toggle();
+                        if (board.getTile(i, j).getIsToggled())
+                        {
+                            board.getTile(i, j).toggle();
+                        }
                     }
                 }
+                toggleMovableTiles();
             }
-            setMovablePoints(board);
         });
+    }
+
+    public abstract void toggleMovableTiles();
+
+    public void move(int x, int y)
+    {
+        GridPane.setRowIndex(imageView, x);
+        GridPane.setColumnIndex(imageView, y);
+        board.getTile(getX(), getY()).setPiece(null);
+        board.getTile(x, y).setPiece(this);
+        this.setX(x);
+        this.setY(y);
+
+        if (this.type.equals("Pawn") && (((this.color.equals("White")) && this.x == 0) || ((this.color.equals("Black")) && this.x == 7)))
+        {
+            System.out.println("Promotion!!!!");
+        }
+
+        turn++;
+
+        if (isFirstMove)
+        {
+            isFirstMove = false;
+        }
     }
 
     public void setX(int x)
@@ -112,19 +142,9 @@ public abstract class Piece
         return color;
     }
 
-    public void move(int x, int y)
-    {
-        board.getTile(x, y).setPiece(null);
-        GridPane.setRowIndex(imageView, x);
-        GridPane.setColumnIndex(imageView, y);
-        setX(x);
-        setY(y);
-        board.getTile(getX(), getY()).setPiece(null);
-        isFirstMove = false;
-    }
-
     public boolean getFirstMove()
     {
         return isFirstMove;
     }
+
 }

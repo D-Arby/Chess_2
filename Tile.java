@@ -1,7 +1,6 @@
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 
 public class Tile
 {
@@ -29,6 +28,7 @@ public class Tile
         {
             image = new Image("assets/square brown dark_png_128px.png");
         }
+
         imageView = new ImageView(image);
         imageView.setFitWidth(64);
         imageView.setFitHeight(64);
@@ -50,15 +50,30 @@ public class Tile
         {
             if (isToggled && movablePiece != null)
             {
+                if (this.piece != null)
+                {
+                    this.piece.getImageView().setImage(null);
+                    this.piece = null;
+                }
+
                 movablePiece.move(x, y);
-                this.toggle();
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (board.getTile(i, j).isToggled)
+                        {
+                            board.getTile(i, j).toggle();
+                        }
+                    }
+                }
             }
         });
     }
 
     public void toggle()
     {
-        if(!isToggled)
+        if (!isToggled)
         {
             if (color.equals("White"))
             {
@@ -74,7 +89,6 @@ public class Tile
         else
         {
             imageView.setImage(image);
-
             isToggled = false;
         }
     }
