@@ -117,4 +117,14 @@ public class Tile
     {
         movablePiece = piece;
     }
+
+    public int getX()
+    {
+        return x;
+    }
+
+    public int getY()
+    {
+        return y;
+    }
 }

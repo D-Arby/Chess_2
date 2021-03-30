@@ -13,7 +13,7 @@ public abstract class Piece
     private final Board board;
     private String type;
     private boolean isFirstMove;
-    private static int turn;
+    private static int turn = 0;
 
     public Piece(int x, int y, String color, Board board)
     {
@@ -22,7 +22,6 @@ public abstract class Piece
         this.color = color;
         this.board = board;
         isFirstMove = true;
-        turn = 0;
     }
 
     public void setImageView(String src)
@@ -30,8 +29,8 @@ public abstract class Piece
         imageView = new ImageView(new Image(src));
         if (type.equals("Pawn"))
         {
-            imageView.setFitHeight(40);
             imageView.setFitWidth(32);
+            imageView.setFitHeight(40);
             GridPane.setMargin(imageView, new Insets(0, 0, 0, 15));
         }
         else
@@ -75,6 +74,18 @@ public abstract class Piece
 
     public abstract void toggleMovableTiles();
 
+    public void promote(int x, int y)
+    {
+        if (getColor().equals("White"))
+        {
+            AlertBox.display(x, y, "White", board);
+        }
+        else
+        {
+            AlertBox.display(x, y, "Black", board);
+        }
+    }
+
     public void move(int x, int y)
     {
         GridPane.setRowIndex(imageView, x);
@@ -83,13 +94,11 @@ public abstract class Piece
         board.getTile(x, y).setPiece(this);
         this.setX(x);
         this.setY(y);
-
+        turn++;
         if (this.type.equals("Pawn") && (((this.color.equals("White")) && this.x == 0) || ((this.color.equals("Black")) && this.x == 7)))
         {
-            System.out.println("Promotion!!!!");
+            promote(x, y);
         }
-
-        turn++;
 
         if (isFirstMove)
         {

@@ -3,13 +3,14 @@ import javafx.scene.layout.GridPane;
 public class Board
 {
     private Tile[][] grid = new Tile[8][8];
+    private GridPane layout;
 
-    public Board()
+    public Board(GridPane layout)
     {
-
+        this.layout = layout;
     }
 
-    public void initialize(GridPane layout)
+    public void initialize()
     {
         String color;
         Piece piece;
@@ -105,5 +106,10 @@ public class Board
     public Tile getTile(int x, int y)
     {
         return grid[x][y];
+    }
+
+    public GridPane getLayout()
+    {
+        return layout;
     }
 }
